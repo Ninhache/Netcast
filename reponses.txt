@@ -1,0 +1,9 @@
+# Chapitre 3 - Un premier serveur TCP
+1. Après y avoir connecté un client, quittez votre serveur (Ctrl+C) et relancez le. Que se passe-t-il ?>
+> Lors du premier démarrage du serveur, l'appel de `nc localhost 8080` affiche le message de bienvenue
+
+> Relancer la commande `nc` affiche plusieurs fois le message
+
+> Relancer le serveur puis `nc` affiche toujours le message
+
+> Quitter puis relancer le serveur alors que la connexion cliente renvoie une erreur `accept client_socket: Bad file descriptor`
