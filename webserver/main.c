@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
 
         write(socket_client, message_bienvenue, welcome_length);
 
-        /*
+        
         // 3.2
         int i = 0;
         while(i < 10) {            
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
             sleep(1);
             i++;
         }
-        */
+        
 
         // fflush(socket_client) ???
         // close(socket_client) ??? [+ perror]
