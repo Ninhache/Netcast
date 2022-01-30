@@ -5,10 +5,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
+#include <signal.h>
 
 #include "utils.h"
 #include "socket.h"
+#include "main.h"
 
 #define UNUSED(x) (void)(x)
 
@@ -18,7 +19,10 @@ int main(int argc, char **argv) {
     UNUSED(argc);
     UNUSED(argv);
     
+    
     int socket_serveur = creer_serveur(8080);
+    initialiser_signaux();
+
     int welcome_length = -1; 
     const char *message_bienvenue = read_file("./webserver/messageBienvenue.netcast", &welcome_length);
 
@@ -48,4 +52,10 @@ int main(int argc, char **argv) {
     }
 
     return EXIT_SUCCESS;
+}
+
+void initialiser_signaux(void) {
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
+        perror("signal");
+    }
 }
