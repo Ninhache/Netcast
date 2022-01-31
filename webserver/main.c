@@ -45,6 +45,7 @@ int main(int argc, char **argv) {
 }
 
 void creer_processus_client (int client_socket) {
+    
     if (fork() == 0) {
         traitement_client(client_socket);
         close(client_socket);
@@ -56,9 +57,12 @@ void creer_processus_client (int client_socket) {
 
 void traitement_client (int client_socket) {
 
-        for (int i = 0; i < 10; ++i) {
-            write(client_socket, message_bienvenue, welcome_length);
-            sleep(1);
+        write(client_socket, message_bienvenue, welcome_length);
+
+        char* buffer = malloc(10);
+        int size = -1;
+        while((size = read(client_socket, buffer, 10)) != -1) {
+            write(client_socket, buffer, size);
         }
         
 }
@@ -81,7 +85,7 @@ void initialiser_signaux (void) {
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
 
-    if (sigaction(SIGCHLD, &sa, NULL) == SIG_ERR)
+    if (sigaction(SIGCHLD, &sa, NULL) == -1)
     {
         perror("sigaction(SIGCHLD)");
     }
