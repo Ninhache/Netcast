@@ -13,53 +13,60 @@
 
 #define UNUSED(x) (void)(x)
 
+char* message_bienvenue;
+int welcome_length = -1;
 
 int main(int argc, char **argv) {
-    
     UNUSED(argc);
     UNUSED(argv);
-    
-    
+
     int socket_serveur = creer_serveur(8080);
     initialiser_signaux();
 
     // run_serveur (socket_serveur (loop)
 
-    int welcome_length = -1; 
-    const char *message_bienvenue = read_file("./webserver/messageBienvenue.netcast", &welcome_length);
+    message_bienvenue = read_file("./webserver/messageBienvenue.netcast", &welcome_length);
 
-    while (1) {
-        // creer_client (socket_serveur) -> socket_client        
-        int socket_client = accept(socket_serveur, NULL, NULL);
-    
+    while (1)
+    {
+        // creer_client (socket_serveur) -> socket_client
+        int socket_client = creer_client(socket_serveur);
+
         if (socket_client == -1) {
-            perror("accept client_socket");
+            perror("creer_client");
             continue;
         }
 
+        creer_processus_client(socket_client);
 
         // process_client (socket_client) -> traitement
         write(socket_client, message_bienvenue, welcome_length);
-
-        
-        // 3.2
-        int i = 0;
-        while(i < 10) {            
-            write(socket_client, message_bienvenue, welcome_length);
-            sleep(1);
-            i++;
-        }
-        
-
-        // fflush(socket_client) ???
-        // close(socket_client) ??? [+ perror]
     }
 
     return EXIT_SUCCESS;
 }
 
-void initialiser_signaux(void) {
-    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
+void creer_processus_client (int client_socket) {
+    if (fork() == 0) {
+        traitement_client(client_socket);
+        close(client_socket);
+        exit(EXIT_SUCCESS);
+    }
+
+    close(client_socket);
+}
+
+void traitement_client (int client_socket) {
+        for (int i = 0; i < 10; ++i) {
+            write(client_socket, message_bienvenue, welcome_length);
+            sleep(1);
+        }
+}
+
+void initialiser_signaux (void)
+{
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
+    {
         perror("signal");
     }
 }

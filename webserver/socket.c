@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <unistd.h>
 #include "socket.h"
 
 #define LISTEN_BACKLOG 10
@@ -38,4 +39,15 @@ int creer_serveur(int port) {
     }
 
     return socket_serveur;
+}
+
+int creer_client(int server_socket) {
+    int client_socket = accept(server_socket, NULL, NULL);
+
+    if (client_socket == -1) {
+        perror("accept client_socket");
+        return -1;
+    }
+    
+    return client_socket;
 }
