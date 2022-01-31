@@ -63,13 +63,12 @@ void traitement_client (int client_socket) {
         while((size = read(client_socket, buffer, 10)) != -1) {
             write(client_socket, buffer, size);
         }
+        free(buffer);
         
 }
 
 void traitement_signal(int sig) {
-    // printf("Signal %d reçu\n", sig);    
-
-    // On utilise un while pour bien traiter tous les signaux
+    UNUSED(sig);
     while (waitpid(-1, NULL, WNOHANG) > 0);
 }
 
@@ -83,12 +82,8 @@ void initialiser_signaux (void) {
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
 
-<<<<<<< HEAD
     if (sigaction(SIGCHLD, &sa, NULL) == -1)
     {
-=======
-    if (sigaction(SIGCHLD, &sa, NULL) == SIG_ERR) {
->>>>>>> b6185fd567ad269ec8b111d1fb3a326c491b7e2d
         perror("sigaction(SIGCHLD)");
     }
 }
