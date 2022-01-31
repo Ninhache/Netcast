@@ -5,27 +5,27 @@
 
 #include "utils.h"
 
+#define BUFFER_SIZE 1024
 
-char* read_file(char* _fichier, int* _size) {
-    int fdFile;
+char* read_file(char* path, int* size) {
+    int file;
     
-    int bufferSize = 100;
-    char* res = malloc(bufferSize);
+    int buffer_size = BUFFER_SIZE;
+    char* result = malloc(buffer_size);
     int total_read = 0;
 
-    if((fdFile = open(_fichier, O_RDONLY)) != -1) {
-        
-        int sizeReaded = 0;
+    if ((file = open(path, O_RDONLY)) != -1) {
+        int size_read = 0;
 
-        while( (sizeReaded=read(fdFile, res + total_read, bufferSize)) > 0 ) {
-            bufferSize = bufferSize*2;
-            total_read += sizeReaded;
-            res = realloc(res, bufferSize + total_read );
+        while ((size_read = read(file, result + total_read, buffer_size)) > 0) {
+            buffer_size = buffer_size * 2;
+            total_read += size_read;
+            result = realloc(result, buffer_size + total_read);
         }
     }
-    
-    close(fdFile);
-    res = realloc(res, total_read);
-    *_size = total_read;
-    return res;
+
+    close(file);
+    result = realloc(result, total_read);
+    *size = total_read;
+    return result;
 }

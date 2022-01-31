@@ -11,7 +11,6 @@
 
 ---
 
-
 > **2. Changez votre envoi de message de bienvenue pour envoyer les 10 lignes par 10 appels à la fonction write et ajoutez un petit délai avant l’envoi du message de bienvenue (1 seconde).  
 Puis, exécutez la commande suivante :  
     ```

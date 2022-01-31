@@ -3,11 +3,10 @@
 
 /**
  * Permet de lire un fichier et d'en récupérer son contenu, et sa taille
- * 
- * @param _fichier Fichier à lire
- * @param _size taille du fichier lu
+ * @param path Fichier à lire
+ * @param size taille du fichier lu
  * @return le contenu intégral du fichier
  */
-char* read_file(char* _fichier, int* _size);
+char* read_file(char* path, int* size);
 
 #endif
