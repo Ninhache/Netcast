@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <signal.h>
+#include <sys/wait.h>
 
 #include "utils.h"
 #include "socket.h"
@@ -54,16 +55,35 @@ void creer_processus_client (int client_socket) {
 }
 
 void traitement_client (int client_socket) {
+
         for (int i = 0; i < 10; ++i) {
             write(client_socket, message_bienvenue, welcome_length);
             sleep(1);
         }
+        
 }
 
-void initialiser_signaux (void)
+void traitement_signal(int sig)
 {
+    printf("Signal %d reçu\n", sig);    
+    waitpid(-1, NULL, WNOHANG);
+}
+
+void initialiser_signaux (void) {
+ 
     if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
     {
         perror("signal");
     }
+
+    struct sigaction sa;
+    sa.sa_handler = traitement_signal;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+
+    if (sigaction(SIGCHLD, &sa, NULL) == SIG_ERR)
+    {
+        perror("sigaction(SIGCHLD)");
+    }
+
 }
