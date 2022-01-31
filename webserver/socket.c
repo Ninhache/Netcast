@@ -25,15 +25,15 @@ int creer_serveur(int port) {
         perror("setsockopt SO_REUSEADDR");
     }
 
-    if(bind(socket_serveur, (struct sockaddr*)&saddr, sizeof(saddr)) == -1) {
+    if (bind(socket_serveur, (struct sockaddr*)&saddr, sizeof(saddr)) == -1) {
         perror("bind server_socket");
-        // fermer socket_serveur ici ?
+        close(socket_serveur);
         return -1;
     }
 
     if (listen(socket_serveur, LISTEN_BACKLOG) == -1) {
         perror("listen server_socket");
-        // fermer un truc ici ?
+        close(socket_serveur);
         return -1;
     }
 
