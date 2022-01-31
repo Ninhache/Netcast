@@ -28,8 +28,7 @@ int main(int argc, char **argv) {
 
     message_bienvenue = read_file("./webserver/messageBienvenue.netcast", &welcome_length);
 
-    while (1)
-    {
+    while (1) {
         // creer_client (socket_serveur) -> socket_client
         int socket_client = creer_client(socket_serveur);
 
@@ -51,7 +50,7 @@ void creer_processus_client (int client_socket) {
         close(client_socket);
         exit(EXIT_SUCCESS);
     }
-
+    // Fermeture du socket client pour le père
     close(client_socket);
 }
 
@@ -67,16 +66,15 @@ void traitement_client (int client_socket) {
         
 }
 
-void traitement_signal(int sig)
-{
-    printf("Signal %d reçu\n", sig);    
-    waitpid(-1, NULL, WNOHANG);
+void traitement_signal(int sig) {
+    // printf("Signal %d reçu\n", sig);    
+
+    // On utilise un while pour bien traiter tous les signaux
+    while (waitpid(-1, NULL, WNOHANG) > 0);
 }
 
 void initialiser_signaux (void) {
- 
-    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
-    {
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
         perror("signal");
     }
 
@@ -85,9 +83,12 @@ void initialiser_signaux (void) {
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
 
+<<<<<<< HEAD
     if (sigaction(SIGCHLD, &sa, NULL) == -1)
     {
+=======
+    if (sigaction(SIGCHLD, &sa, NULL) == SIG_ERR) {
+>>>>>>> b6185fd567ad269ec8b111d1fb3a326c491b7e2d
         perror("sigaction(SIGCHLD)");
     }
-
 }
