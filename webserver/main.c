@@ -38,9 +38,6 @@ int main(int argc, char **argv) {
         }
 
         creer_processus_client(socket_client);
-
-        // process_client (socket_client) -> traitement
-        write(socket_client, message_bienvenue, welcome_length);
     }
 
     return EXIT_SUCCESS;
