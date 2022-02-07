@@ -15,7 +15,7 @@
 #define UNUSED(x) (void)(x)
 
 char* message_bienvenue;
-int welcome_length = -1;
+size_t welcome_length = 0;
 
 int main(int argc, char **argv) {
     UNUSED(argc);
@@ -60,22 +60,20 @@ void traitement_client (int client_socket) {
 
         fprintf(io_client, "%s\r\n", message_bienvenue);
 
-        char buffer[BUFFER_SIZE];
+        /*char buffer[BUFFER_SIZE];
         while((fgets(buffer, BUFFER_SIZE, io_client)) != 0) {
             fprintf(io_client, "%s", buffer);
-        }
-        
-        /*
-        write(client_socket, message_bienvenue, welcome_length);
-        
-        int size = -1;
-        while((size = read(client_socket, buffer, 10)) != -1) {
-            write(client_socket, buffer, size);
-        }
-        */
-        
+        }*/
 
-        fflush(io_client);
+        size_t line_length;
+        char* line = NULL;
+        while ((line = read_line(io_client, &line_length))) {
+            fprintf(io_client, "<Pawnee>%s\r\n", line);
+
+            fflush(io_client);
+            free(line);
+        }
+        
         free(io_client);
 }
 

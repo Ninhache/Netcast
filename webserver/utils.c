@@ -5,9 +5,9 @@
 
 #include "utils.h"
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 10
 
-char* read_file(char* path, int* size) {
+char* read_file(char* path, size_t* size) {
     int file;
     
     int buffer_size = BUFFER_SIZE;
@@ -28,4 +28,29 @@ char* read_file(char* path, int* size) {
     result = realloc(result, total_read);
     *size = total_read;
     return result;
+}
+
+char* read_line(FILE* file, size_t* size) {
+    size_t length = 0;
+    int data_read = 0;
+
+    size_t buffer_size = BUFFER_SIZE;
+    char* buffer = malloc(sizeof(char) * buffer_size);
+
+    // Si le caractère lu n'est ni une nouvelle ligne, ni la fin du fichier
+    while ((data_read = fgetc(file)) != '\n' && data_read != EOF) {
+        // Si le buffer est plein, on l'agrandit (doubler la capacité)
+        if (length >= buffer_size) {
+            buffer_size *= 2;
+            buffer = realloc(buffer, buffer_size);
+        }
+
+        buffer[length++] = data_read;
+    }
+
+    buffer = realloc(buffer, ++length);
+    buffer[length - 1] = '\0';
+
+    *size = length;
+    return buffer;
 }
