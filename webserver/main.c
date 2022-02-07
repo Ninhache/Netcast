@@ -6,13 +6,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 #include <sys/wait.h>
 
 #include "utils.h"
 #include "socket.h"
 #include "main.h"
-
-#define UNUSED(x) (void)(x)
 
 char* message_bienvenue;
 size_t welcome_length = 0;
@@ -54,27 +53,21 @@ void creer_processus_client (int client_socket) {
     close(client_socket);
 }
 
-#define BUFFER_SIZE 1024
 void traitement_client (int client_socket) {
-        FILE* io_client = fdopen(client_socket, "a+");
+    FILE* io_client = fdopen(client_socket, "a+");
 
-        fprintf(io_client, "%s\r\n", message_bienvenue);
+    fprintf(io_client, "%s\r\n", message_bienvenue);
 
-        /*char buffer[BUFFER_SIZE];
-        while((fgets(buffer, BUFFER_SIZE, io_client)) != 0) {
-            fprintf(io_client, "%s", buffer);
-        }*/
+    char line[BUFFER_SIZE];
+    while (fgets(line, BUFFER_SIZE, io_client)) {
+        size_t ln = strlen(line);
+        printf("Length: %ld\n", ln);
+        fprintf(io_client, "<Pawnee>%s\n", line);
 
-        size_t line_length;
-        char* line = NULL;
-        while ((line = read_line(io_client, &line_length))) {
-            fprintf(io_client, "<Pawnee>%s\r\n", line);
-
-            fflush(io_client);
-            free(line);
-        }
-        
-        free(io_client);
+        fflush(io_client);
+    }
+    
+    free(io_client);
 }
 
 void traitement_signal(int sig) {
