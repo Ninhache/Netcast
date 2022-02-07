@@ -54,17 +54,29 @@ void creer_processus_client (int client_socket) {
     close(client_socket);
 }
 
+#define BUFFER_SIZE 1024
 void traitement_client (int client_socket) {
+        FILE* io_client = fdopen(client_socket, "a+");
 
+        fprintf(io_client, "%s\r\n", message_bienvenue);
+
+        char buffer[BUFFER_SIZE];
+        while((fgets(buffer, BUFFER_SIZE, io_client)) != 0) {
+            fprintf(io_client, "%s", buffer);
+        }
+        
+        /*
         write(client_socket, message_bienvenue, welcome_length);
-
-        char* buffer = malloc(10);
+        
         int size = -1;
         while((size = read(client_socket, buffer, 10)) != -1) {
             write(client_socket, buffer, size);
         }
-        free(buffer);
+        */
         
+
+        fflush(io_client);
+        free(io_client);
 }
 
 void traitement_signal(int sig) {
