@@ -56,17 +56,30 @@ void creer_processus_client (int client_socket) {
 void traitement_client (int client_socket) {
     FILE* io_client = fdopen(client_socket, "a+");
 
+    // Envoie du message de bienvenue
     fprintf(io_client, "%s\r\n", message_bienvenue);
 
+    // Traitement de la reqûete HTTP
     size_t line_length;
     char buffer_line[HTTP_LINE_LENGTH];
+    char* line = fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
+    line_length = strlen(line);
+    
+    if(strcmp(line, "GET / HTTP/1.1\r\n")) {
+        // ...
+        
+    } else {
+        // ...
+
+    }
+
     do {
-        char* line = fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
+        line = fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
         line_length = strlen(line);
-        printf("Length: %ld\n", line_length);
+        //printf("Length: %ld\n", line_length);
         printf("Received:\n%s\n", line);
-        fprintf(io_client, "<Pawnee>%s\n", line);
-        fflush(io_client);
+        //fprintf(io_client, "<Pawnee>%s\n", line);
+        //fflush(io_client);
     } while (line_length > 1);
 
     free(io_client);
