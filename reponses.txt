@@ -35,3 +35,34 @@ Le serveur n'accepte pas la connexion, car c'est un format d'adresse IPV6 (Il es
 > **4. Lancez deux clients simultanément. Que se passe-t-il ? Pourquoi ?**
 
 La connexion s'effectue sur les deux clients, mais la reception des messages de bienvenue se font en differés (Probablement à cause de la boucle while)
+
+# Chapitre 5
+
+> **3 Quel est le message envoyé par le client web ?**
+
+En faisant la commande tel quel : 
+On reçoit la page d'erreur du proxy de l'université
+
+En utilisant `export NO_PROXY=localhost` :
+On envoit au serveur :
+```
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/7.64.0
+Accept: */*
+```
+Le client reçoit :
+Notre message de bienvenue
+
+> **4 À l’aide de la RFC, trouvez le nom donné aux trois constituant de la première ligne de la requête envoyée par le
+client.**
+
+1<sup>ère</sup> ligne : Méthode HTTP suivi de la version du protocole HTTP (`HTTP/1.1`)  
+Ligne(s) suivante(s) : Champs d'entête correspondant à des modificateurs de requête : 
+
+|Nom de l'entête|Explications|
+|--|--|
+|`Host: URI`|Permet de spécifier l'URI de la ressource demandée.|
+|`User-Agent: TEXT`|Permet de spécifier "l'identité" du logiciel utilisé pour visiter la page.|
+|`Accept: MIME-TYPE`|Permet de spécifier le format de la ressource que le client souhaite recevoir. (XML, JSON, ...)  
+
