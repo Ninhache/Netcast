@@ -5,9 +5,9 @@
 
 #include "utils.h"
 
-#define MAX_LINE_MEMSIZE 100000
+#define MAX_LINE_MEMSIZE 8192
 
-char* read_file(char* path, size_t* size) {
+char* read_file (char* path, size_t* size) {
     int file;
     int buffer_size = BUFFER_SIZE;
 
@@ -50,11 +50,19 @@ char* read_file(char* path, size_t* size) {
     return result;
 }
 
-char* read_line(FILE* file, size_t* size) {
+char* read_line (FILE* file, size_t* size) {
+    return read_line_limited(file, size, 0);
+}
+
+char* read_line_limited (FILE* file, size_t* size, size_t maximum_size) {
     size_t length = 0;
     int data_read = 0;
 
     size_t buffer_size = BUFFER_SIZE;
+    if (maximum_size > 0 && buffer_size > maximum_size) {
+        buffer_size = maximum_size;
+    }
+
     char* buffer = malloc(sizeof(char) * buffer_size);
     if (buffer == NULL) {
         perror("malloc");
@@ -64,12 +72,19 @@ char* read_line(FILE* file, size_t* size) {
 
     // Si le caractère lu n'est ni une nouvelle ligne, ni la fin du fichier
     while ((data_read = fgetc(file)) != '\n' && data_read != EOF) {
+        if (length >= maximum_size - 1) {
+            break;
+        }
+
         // Si le buffer est plein, on l'agrandit (doubler la capacité)
         if (length >= buffer_size) {
             buffer_size = buffer_size + BUFFER_SIZE;
+            if (maximum_size > 0 && buffer_size >= maximum_size) {
+                buffer_size = maximum_size;
+            }
             char* tmp = realloc(buffer, buffer_size);
             if (tmp == NULL) {
-                perror("malloc");
+                perror("realloc");
                 free(tmp);
                 return NULL;
             }

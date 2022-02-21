@@ -58,15 +58,17 @@ void traitement_client (int client_socket) {
 
     fprintf(io_client, "%s\r\n", message_bienvenue);
 
-    char line[BUFFER_SIZE];
-    while (fgets(line, BUFFER_SIZE, io_client)) {
-        size_t ln = strlen(line);
-        printf("Length: %ld\n", ln);
+    size_t line_length;
+    char buffer_line[HTTP_LINE_LENGTH];
+    do {
+        char* line = fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
+        line_length = strlen(line);
+        printf("Length: %ld\n", line_length);
+        printf("Received:\n%s\n", line);
         fprintf(io_client, "<Pawnee>%s\n", line);
-
         fflush(io_client);
-    }
-    
+    } while (line_length > 1);
+
     free(io_client);
 }
 
