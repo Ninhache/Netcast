@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 
         creer_processus_client(socket_client);
     }
-
+    free(message_bienvenue);
     return EXIT_SUCCESS;
 }
 
