@@ -56,31 +56,49 @@ void creer_processus_client (int client_socket) {
 void traitement_client (int client_socket) {
     FILE* io_client = fdopen(client_socket, "a+");
 
-    // Envoie du message de bienvenue
-    fprintf(io_client, "%s\r\n", message_bienvenue);
 
     // Traitement de la reqûete HTTP
-    size_t line_length;
+    //size_t line_length;
     char buffer_line[HTTP_LINE_LENGTH];
-    char* line = fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
-    line_length = strlen(line);
-    
-    if(strcmp(line, "GET / HTTP/1.1\r\n")) {
-        // ...
-        
-    } else {
-        // ...
+    fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
+    //line_length = strlen(buffer_line);
 
+    printf("[0] %s", buffer_line);
+
+    if(strcmp(buffer_line, "GET / HTTP/1.1\r\n") == 0) {
+        printf("[1] VALID REQUEST (GET)\n");
+        printf("[1] SENDING WELCOME MESSAGE\n");
+        
+        fprintf(io_client, "HTTP/1.1 200 OK\n");
+        fprintf(io_client, "Content-Length: %ld\n\r\n", welcome_length);
+        fprintf(io_client, "%s\r\n", message_bienvenue);
+        
+        printf("[1] PROCESSING HEADER LINES\n");
+
+        while (strcmp("\r\n", fgets(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
+            printf("[2] HEADER LINE | %s", buffer_line);
+        }
+    } else {
+        printf("[1] INVALID REQUEST\n");
+        fprintf(io_client, "HTTP/1.1 400 Bad Request\r\n");
+        fprintf(io_client, "Connection: close\r\n");
+        fprintf(io_client, "Content-Length: 17\r\n");
+        fprintf(io_client, "\r\n");
+        fprintf(io_client, "400 Bad Request\r\n");
     }
 
+    fflush(io_client);
+    /*
     do {
-        line = fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
-        line_length = strlen(line);
+        fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
+        line_length = strlen(buffer_line);
         //printf("Length: %ld\n", line_length);
-        printf("Received:\n%s\n", line);
+        printf("Received:\n%s\n", buffer_line);
         //fprintf(io_client, "<Pawnee>%s\n", line);
         //fflush(io_client);
     } while (line_length > 1);
+    */
+    
 
     free(io_client);
 }
