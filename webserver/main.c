@@ -68,18 +68,19 @@ void traitement_client (int client_socket) {
     if(strcmp(buffer_line, "GET / HTTP/1.1\r\n") == 0) {
         printf("[1] VALID REQUEST (GET)\n");
         printf("[1] SENDING WELCOME MESSAGE\n");
-        
-        fprintf(io_client, "HTTP/1.1 200 OK\n");
-        fprintf(io_client, "Content-Length: %ld\n\r\n", welcome_length);
-        fprintf(io_client, "%s\r\n", message_bienvenue);
-        
         printf("[1] PROCESSING HEADER LINES\n");
 
         while (strcmp("\r\n", fgets(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
             printf("[2] HEADER LINE | %s", buffer_line);
         }
+
+        printf("[1] REPLYING TO CLIENT REQUEST (200 OK)\n");
+        fprintf(io_client, "HTTP/1.1 200 OK\n");
+        fprintf(io_client, "Content-Length: %ld\n\r\n", welcome_length);
+        fprintf(io_client, "%s\r\n", message_bienvenue);
     } else {
         printf("[1] INVALID REQUEST\n");
+        printf("[1] REPLYING TO CLIENT REQUEST (400 Bad Request)\n");
         fprintf(io_client, "HTTP/1.1 400 Bad Request\r\n");
         fprintf(io_client, "Connection: close\r\n");
         fprintf(io_client, "Content-Length: 17\r\n");
