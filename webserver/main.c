@@ -75,8 +75,8 @@ void traitement_client (int client_socket) {
         }
 
         printf("[1] REPLYING TO CLIENT REQUEST (200 OK)\n");
-        fprintf(io_client, "HTTP/1.1 200 OK\n");
-        fprintf(io_client, "Content-Length: %ld\n\r\n", welcome_length);
+        fprintf(io_client, "HTTP/1.1 200 OK\r\n");
+        fprintf(io_client, "Content-Length: %ld\r\n\r\n", welcome_length);
         fprintf(io_client, "%s\r\n", message_bienvenue);
     } else {
         printf("[1] INVALID REQUEST\n");
