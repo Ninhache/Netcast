@@ -9,6 +9,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
+#include "http_parse.h"
 #include "utils.h"
 #include "socket.h"
 #include "main.h"
@@ -63,6 +64,17 @@ void traitement_client (int client_socket) {
 
     printf("[0] %s", buffer_line);
 
+    http_request http_req;
+
+    if(parse_http_request(buffer_line, &http_req) == -1) {
+        // requête invalide
+        printf("Requête invalide");
+    } else {
+        printf("Requête valide");
+    }
+
+
+    /*
     if(strcmp(buffer_line, "GET / HTTP/1.1\r\n") == 0) {
         printf("[1] VALID REQUEST (GET)\n");
         printf("[1] SENDING WELCOME MESSAGE\n");
@@ -85,6 +97,7 @@ void traitement_client (int client_socket) {
         fprintf(io_client, "\r\n");
         fprintf(io_client, "400 Bad Request\r\n");
     }
+    */
 
     fflush(io_client);
     free(io_client);

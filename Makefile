@@ -1,7 +1,7 @@
 # Cette variable contient la liste des sous répertoires
 # pour lesquels il faudra construire un programme.
 # Pour l'instant, seul le serveur web est dans la liste.
-FOLDERS=webserver
+FOLDERS=parselib webserver
 
 # Indique à make les règles qui ne correspondent pas à la création
 # d'un fichier
