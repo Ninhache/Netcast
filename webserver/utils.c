@@ -100,3 +100,10 @@ char* read_line_limited (FILE* file, size_t* size, size_t maximum_size) {
     *size = length;
     return buffer;
 }
+
+char* fgets_or_exit(char* buffer, int size, FILE* stream) {
+    if (fgets(buffer, size, stream) == NULL) {
+        exit(EXIT_SUCCESS);
+    }
+    return buffer;
+}

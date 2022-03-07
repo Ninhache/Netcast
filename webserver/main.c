@@ -60,7 +60,7 @@ void traitement_client (int client_socket) {
     // Traitement de la reqûete HTTP
     //size_t line_length;
     char buffer_line[HTTP_LINE_LENGTH];
-    fgets(buffer_line, HTTP_LINE_LENGTH, io_client);
+    fgets_or_exit(buffer_line, HTTP_LINE_LENGTH, io_client);
     //line_length = strlen(buffer_line);
 
     printf("[0] %s", buffer_line);
@@ -113,7 +113,7 @@ void traitement_client (int client_socket) {
 
 void skip_header(FILE* io_client) {
     char buffer_line[HTTP_LINE_LENGTH];
-    while (strcmp("\r\n", fgets(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
+    while (strcmp("\r\n", fgets_or_exit(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
         printf("[2] HEADER LINE | %s", buffer_line);
     }
 }
