@@ -23,10 +23,4 @@ void traitement_client (int client_socket);
  */
 void traitement_signal(int sig);
 
-/**
- * @brief Consomme toutes les lignes d'entête jusqu'à arriver au début du corps de la requête
- * @param io_client Descripteur de fichier pour la réception des données
- */
-void skip_header(FILE* io_client);
-
 #endif
