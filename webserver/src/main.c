@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 
     // run_serveur (socket_serveur (loop)
 
-    message_bienvenue = read_file("./webserver/messageBienvenue.netcast", &welcome_length);
+    message_bienvenue = read_file("./webserver/resources/messageBienvenue.netcast", &welcome_length);
 
     while (1) {
         // creer_client (socket_serveur) -> socket_client
@@ -70,23 +70,16 @@ void traitement_client (int client_socket) {
         printf("[1] SENDING WELCOME MESSAGE\n");
         printf("[1] PROCESSING HEADER LINES\n");
 
-        skip_header(io_client);
+        while (strcmp("\r\n", fgets(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
+            printf("[2] HEADER LINE | %s", buffer_line);
+        }
 
         printf("[1] REPLYING TO CLIENT REQUEST (200 OK)\n");
         fprintf(io_client, "HTTP/1.1 200 OK\r\n");
         fprintf(io_client, "Content-Length: %ld\r\n\r\n", welcome_length);
         fprintf(io_client, "%s\r\n", message_bienvenue);
-    } else if (strcmp(buffer_line, "GET /inexistant HTTP/1.1\r\n") == 0) {
-        skip_header(io_client);
-        printf("[1] FILE NOT FOUND\n");
-        printf("[1] REPLYING TO CLIENT REQUEST (404 Not Found)\n");
-        fprintf(io_client, "HTTP/1.1 404 Not Found\r\n");
-        fprintf(io_client, "Connection: close\r\n");
-        fprintf(io_client, "Content-Length: 15\r\n");
-        fprintf(io_client, "\r\n");
-        fprintf(io_client, "404 Not Found\r\n");
     } else {
-        printf("[1] INVALID REQUEST\n");
+        printf("[1] INVALID REQUEST\n");
         printf("[1] REPLYING TO CLIENT REQUEST (400 Bad Request)\n");
         fprintf(io_client, "HTTP/1.1 400 Bad Request\r\n");
         fprintf(io_client, "Connection: close\r\n");
@@ -109,13 +102,6 @@ void traitement_client (int client_socket) {
     
 
     free(io_client);
-}
-
-void skip_header(FILE* io_client) {
-    char buffer_line[HTTP_LINE_LENGTH];
-    while (strcmp("\r\n", fgets(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
-        printf("[2] HEADER LINE | %s", buffer_line);
-    }
 }
 
 void traitement_signal(int sig) {
