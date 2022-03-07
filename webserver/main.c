@@ -10,6 +10,8 @@
 #include <sys/wait.h>
 
 #include "http_parse.h"
+#include "http.h"
+#include "signals.h"
 #include "utils.h"
 #include "socket.h"
 #include "main.h"
@@ -73,7 +75,6 @@ void traitement_client (int client_socket) {
         printf("Requête valide");
     }
 
-
     /*
     if(strcmp(buffer_line, "GET / HTTP/1.1\r\n") == 0) {
         printf("[1] VALID REQUEST (GET)\n");
@@ -101,32 +102,4 @@ void traitement_client (int client_socket) {
 
     fflush(io_client);
     free(io_client);
-}
-
-void skip_header(FILE* io_client) {
-    char buffer_line[HTTP_LINE_LENGTH];
-    while (strcmp("\r\n", fgets_or_exit(buffer_line, HTTP_LINE_LENGTH, io_client)) != 0) {
-        printf("[2] HEADER LINE | %s", buffer_line);
-    }
-}
-
-void traitement_signal(int sig) {
-    UNUSED(sig);
-    while (waitpid(-1, NULL, WNOHANG) > 0);
-}
-
-void initialiser_signaux (void) {
-    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
-        perror("signal");
-    }
-
-    struct sigaction sa;
-    sa.sa_handler = traitement_signal;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-
-    if (sigaction(SIGCHLD, &sa, NULL) == -1)
-    {
-        perror("sigaction(SIGCHLD)");
-    }
 }
