@@ -1,14 +1,13 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "utils.h"
 
 #define MAX_LINE_MEMSIZE 8192
 #define BUFFER_SIZE 4096
-
 
 char* read_file (char* path, size_t* size) {
     int file;
