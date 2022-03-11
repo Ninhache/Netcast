@@ -7,4 +7,21 @@
  */
 void traitement_client (int client_socket);
 
+/**
+ * @brief Transmet au client une ligne de status correspondant aux paramètres de la fonctions
+ * @param client Le client qui recevera la ligne de status
+ * @param code Le code status de retour du serveur
+ * @param reason_phrase La phrase associé au code erreur
+ */
+void send_status(FILE* client, int code, const char* reason_phrase);
+
+/**
+ * @brief Répond au client en fonctions des paramètres
+ * @param client Le client qui recevera la ligne de status
+ * @param code Le code status de retour du serveur
+ * @param reason_phrase La phrase associé au code erreur
+ * @param message_body 
+ */
+void send_response(FILE* client, int code, const char* reason_phrase, const char* message_body);
+
 #endif
