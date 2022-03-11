@@ -1,8 +1,11 @@
-#ifndef __UTILS_H__
-#define __UTILS_H__
+#ifndef UTILS_H
+#define UTILS_H
 
 // MACRO
 #define UNUSED(x) (void)(x)
+
+extern size_t welcome_length;
+extern char* message_bienvenue;
 
 /**
  * @brief Permet de lire un fichier et d'en récupérer son contenu, et sa taille

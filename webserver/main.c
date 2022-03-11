@@ -14,15 +14,15 @@
 #include "signals.h"
 #include "utils.h"
 
+size_t welcome_length;
 char* message_bienvenue;
-size_t welcome_length = 0;
 
 int main(int argc, char **argv) {
     UNUSED(argc);
     UNUSED(argv);
 
-    initialiser_signaux();
     message_bienvenue = read_file("./webserver/resources/messageBienvenue.netcast", &welcome_length);
+    initialiser_signaux();
 
     demarrer_serveur(DEFAULT_PORT);
     
