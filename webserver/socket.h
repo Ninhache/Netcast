@@ -1,5 +1,5 @@
-#ifndef __SOCKET_H__
-#define __SOCKET_H__
+#ifndef SOCKET_H
+#define SOCKET_H
 
 /**
  * Instancie une socket serveur écoutant les connexions entrantes sur le port spécifié
