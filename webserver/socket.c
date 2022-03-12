@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "socket.h"
+#include "logger.h"
 
 #define LISTEN_BACKLOG 10
 
@@ -44,6 +45,8 @@ int creer_serveur(int port) {
 
 int creer_client(int server_socket) {
     int client_socket = accept(server_socket, NULL, NULL);
+    // Recup le 2e param pour savoir d'où ça vient !
+    s_log(level2, "Connexion from", "somewhere");
 
     if (client_socket == -1) {
         perror("accept client_socket");
