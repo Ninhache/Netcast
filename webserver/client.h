@@ -22,6 +22,8 @@ void send_status(FILE* client, int code, const char* reason_phrase);
  * @param reason_phrase La phrase associé au code erreur
  * @param message_body 
  */
-void send_response(FILE* client, int code, const char* reason_phrase, const char* message_body);
+void send_text_response(FILE* client, int code, const char* reason_phrase, const char* message_body);
+
+void send_better_response(FILE* client, int code, const char* reason_phrase, const char* message_body, char* content_type, size_t size);
 
 #endif

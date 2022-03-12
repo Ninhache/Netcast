@@ -6,6 +6,7 @@
 
 extern size_t welcome_length;
 extern char* message_bienvenue;
+extern char* document_root;
 
 /**
  * @brief Permet de lire un fichier et d'en récupérer son contenu, et sa taille
@@ -13,7 +14,9 @@ extern char* message_bienvenue;
  * @param size Taille du fichier lu
  * @return le contenu intégral du fichier
  */
-char* read_file (char* path, size_t* size);
+char* read_file_path(char* path, size_t* size);
+
+char* read_file_ptr(FILE* file, size_t* size);
 
 /**
  * @brief Lis le contenu d'une ligne ou quitte le processus si la lecture échoue
@@ -23,5 +26,9 @@ char* read_file (char* path, size_t* size);
  * @return char* 
  */
 char* fgets_or_exit(char* buffer, int size, FILE* stream);
+
+char* get_mime(char* filename);
+
+char* strlower(char* string);
 
 #endif

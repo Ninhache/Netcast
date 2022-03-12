@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #include "utils.h"
 
 #define MAX_LINE_MEMSIZE 8192
 #define BUFFER_SIZE 4096
 
-char* read_file (char* path, size_t* size) {
+char* read_file_path (char* path, size_t* size) {
     int file;
     int buffer_size = BUFFER_SIZE;
 
@@ -52,9 +53,32 @@ char* read_file (char* path, size_t* size) {
     return result;
 }
 
+char* read_file_ptr(FILE* file, size_t* content_size) {
+    char * buffer = 0;
+    long length;
+
+    fseek(file, 0, SEEK_END);
+    length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    buffer = malloc(length);
+    if (buffer) {
+        fread(buffer, 1, length, file);
+    }
+    *content_size = length;
+    return buffer;
+}
+
 char* fgets_or_exit(char* buffer, int size, FILE* stream) {
     if (fgets(buffer, size, stream) == NULL) {
         exit(EXIT_SUCCESS);
     }
     return buffer;
+}
+
+char* strlower(char *str) {
+    for (char *str = str; *str != '\0'; str++) {
+        *str = tolower(*str);
+    }
+    return str;
 }
