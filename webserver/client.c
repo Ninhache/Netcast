@@ -77,4 +77,13 @@ void send_better_response(FILE *client, int code, const char *reason_phrase, con
     fprintf(client, "Content-Type: %s\r\n", content_type);
     fprintf(client, "\r\n");
     fprintf(client, "%s\r\n", message_body);
+
+    //char* contentLength;
+    //sprintf(contentLength, "Content-Length: %ld\r\n", size);
+    
+    //fprintf(client, "Content-Length: %ld\r\n", size);
+    //fprintf(client, "Content-Type: %s\r\n", content_type);
+    //fprintf(client, "\r\n");
+    //fwrite(message_body, sizeof(char), size, client);
+
 }

@@ -27,8 +27,18 @@ char* read_file_ptr(FILE* file, size_t* size);
  */
 char* fgets_or_exit(char* buffer, int size, FILE* stream);
 
+/**
+ * @brief Permet de déterminer le type mime du fichier passé en paramètre
+ * @param filename Fichier déterminant le type mime
+ * @return Renvoie le type mime
+ */
 char* get_mime(char* filename);
 
+/**
+ * @brief Transforme une chaine de charactères en chaîne de charactère minuscule
+ * @param string Chaîne de chractère à rendre minuscule
+ * @return Renvoie la chaîne de charactère en minuscule
+ */
 char* strlower(char* string);
 
 #endif

@@ -19,7 +19,7 @@ void setupLogger() {
     level5 = SUCCESS;
 }
 
-void setColor(e_level level, char** begin, char** end) {
+void setColor(e_level level, char** begin) {
     switch (level) {
         case INFORMATIONS:
             *begin = LOG_WHITE;
@@ -37,21 +37,18 @@ void setColor(e_level level, char** begin, char** end) {
             *begin = LOG_GREEN;
             break;
     }
-    *end = LOG_RESET;
 }
 
 void s_log(e_level level, char* messageTitle, char* messageBody) {
     char* errorBegin;
-    char* errorEnd;
-    setColor(level, &errorBegin, &errorEnd);
+    setColor(level, &errorBegin);
 
-    printf("%s[SERVER] : %s %s %s\n", errorBegin, messageTitle, messageBody, errorEnd);
+    printf("%s[SERVER] : %s %s %s\n", errorBegin, messageTitle, messageBody, LOG_RESET);
 }
 
 void c_log(e_level level, char* messageTitle, char* messageBody) {
     char* errorBegin;
-    char* errorEnd;
-    setColor(level, &errorBegin, &errorEnd);
+    setColor(level, &errorBegin);
 
-    printf("%s[CLIENT %d] : %s %s %s\n", errorBegin, getpid(), messageTitle, messageBody, errorEnd);
+    printf("%s[CLIENT %d] : %s %s %s\n", errorBegin, getpid(), messageTitle, messageBody, LOG_RESET);
 }

@@ -52,12 +52,10 @@ typedef struct
 } http_request;
 
 /** Parses a http request line.
-    
-    @param in request_line the line to parse (as a null terminated string). The line can end with '\r\n', '\n' or nothing after the HTTP version
-    @param out request a valid pointer to a http_request that will be filled by the function
-
-    @return -1 if error and 0 on success. If the error is an
-    unsupported http method, then the method field of request will be set to HTTP_UNSUPPORTED
+   @param in request_line the line to parse (as a null terminated string). The line can end with '\r\n', '\n' or nothing after the HTTP version
+   @param out request a valid pointer to a http_request that will be filled by the function
+   @return -1 if error and 0 on success. If the error is an
+   unsupported http method, then the method field of request will be set to HTTP_UNSUPPORTED
 */
 int parse_http_request(const char *request_line , http_request *request);
 

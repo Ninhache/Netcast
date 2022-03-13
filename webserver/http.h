@@ -21,9 +21,10 @@ void skip_header(FILE* io_client);
 char* rewrite_target(char *target);
 
 /**
- * @brief 
- * @param 
- * @return 
+ * @brief Vérifie si un fichier est disponible dans l'arborescence passée en paramètres
+ * @param target Fichier à localiser dans la racine
+ * @param document_root Racine du serveur
+ * @return Renvoie le fichier si il a été trouvé, NULL sinon
  */
 FILE* check_and_open(const char *target, const char *document_root);
 
