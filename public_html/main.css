@@ -1,0 +1,43 @@
+@keyframes changeColor {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(2.5) rotateZ(5000deg);
+    }
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+
+
+* {
+    color: red;
+    margin: 0;
+}
+
+.dancingBruno {
+    animation: 1s linear infinite alternate changeColor;
+    margin: auto;
+    scale: 3;
+    /* 
+    animation-fill-mode: forwards;
+    animation-name: changeColor;
+    animation-duration: 500ms;
+    */ 
+}
+
+body > div {
+    display: flex;
+    height: 100%;
+}
+
+body > h1 {
+    z-index: 999;
+    position: relative;
+    text-align: center;
+}

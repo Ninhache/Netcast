@@ -14,6 +14,7 @@ void skip_header(FILE* io_client) {
 }
 
 char* rewrite_target(char *target) {
+    if(strstr(target, "..")) return "/";
     char* res = malloc(sizeof(char) * strlen(target));
     int i = 0;
     while(*target != '?' && *target != '\0') {
