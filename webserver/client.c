@@ -22,7 +22,7 @@ void traitement_client (int client_socket) {
     http_request http_req;
     int parsed_req = parse_http_request(buffer_line, &http_req);
     char* target = rewrite_target(http_req.target);
-    
+
     if (parsed_req == -1) {
         c_log(level4, "Invalid request", target);
         if (http_req.method == HTTP_UNSUPPORTED) {
@@ -35,6 +35,8 @@ void traitement_client (int client_socket) {
     } else {
         c_log(level1, "Request supported", "...");
 
+        if(strcmp(target,"/") == 0) target = "/index.html";
+        
         FILE* file = check_and_open(target, document_root);
 
         if (file == NULL) {
@@ -46,12 +48,12 @@ void traitement_client (int client_socket) {
             char* file_content = read_file_ptr(file, &content_size);
             char* mime = get_mime(target);
             
-            // IMAGES ARE NOT WORKING !!!
             send_better_response(io_client, 200, "OK", file_content, mime, content_size);
-
+            
             free(file_content);
-            fclose(file);
+            free(mime);
         } 
+        fclose(file);
     }   
 
     c_log(level2, "Client disconncted", "See ya later !");
@@ -61,9 +63,13 @@ void traitement_client (int client_socket) {
 
 void send_status(FILE* client, int code, const char* reason_phrase) {
     c_log(level1, "Sending response status", "");
+    
+    char codeNumber[4];
+    sprintf(codeNumber, "%d", code);
+    s_log(level2, codeNumber, (char*) reason_phrase);
+
     fprintf(client, "HTTP/1.1 %d %s\r\n", code, reason_phrase);
 }
-
 
 void send_text_response(FILE *client, int code, const char *reason_phrase, const char *message_body) {
     send_better_response(client, code, reason_phrase, message_body, "text/plain", strlen(message_body));
@@ -73,17 +79,16 @@ void send_better_response(FILE *client, int code, const char *reason_phrase, con
     send_status(client, code, reason_phrase);
     
     c_log(level1, "Sending response content", "");
-    fprintf(client, "Content-Length: %ld\r\n", size);
-    fprintf(client, "Content-Type: %s\r\n", content_type);
-    fprintf(client, "\r\n");
-    fprintf(client, "%s\r\n", message_body);
-
-    //char* contentLength;
-    //sprintf(contentLength, "Content-Length: %ld\r\n", size);
-    
     //fprintf(client, "Content-Length: %ld\r\n", size);
     //fprintf(client, "Content-Type: %s\r\n", content_type);
     //fprintf(client, "\r\n");
-    //fwrite(message_body, sizeof(char), size, client);
-
+    //fprintf(client, "%s\r\n", message_body);
+    
+    fprintf(client, "Content-Length: %ld\r\n", size);
+    fprintf(client, "Content-Type: %s\r\n", content_type);
+    fprintf(client, "\r\n");
+    //fprintf(client, "%s\r\n", message_body);
+    
+    fwrite(message_body, sizeof(char), size, client);
+    fflush(client);
 }
