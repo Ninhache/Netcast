@@ -15,6 +15,7 @@
 #include "signals.h"
 #include "utils.h"
 #include "logger.h"
+#include "mimetype.h"
 
 size_t welcome_length;
 char* message_bienvenue;
@@ -23,7 +24,7 @@ char* document_root;
 int main(int argc, char **argv) {
     UNUSED(argc);
     UNUSED(argv);
-
+    
     setupLogger();
 
     char buf[PATH_MAX];

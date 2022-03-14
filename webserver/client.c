@@ -8,7 +8,7 @@
 #include "http_parse.h"
 #include "utils.h"
 #include "logger.h"
-
+#include "mimetype.h"
 
 void traitement_client (int client_socket) {
     FILE* io_client = fdopen(client_socket, "a+");
@@ -44,7 +44,9 @@ void traitement_client (int client_socket) {
             c_log(level4, "Request Found :", target);
             size_t content_size;
             char* file_content = read_file_ptr(file, &content_size);
-            char* mime = get_mime(target);
+            
+            
+            char* mime = mimetype(target);
             
             // IMAGES ARE NOT WORKING !!!
             send_better_response(io_client, 200, "OK", file_content, mime, content_size);

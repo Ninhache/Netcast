@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <ctype.h>
@@ -81,4 +82,14 @@ char* strlower(char *str) {
         *str = tolower(*str);
     }
     return str;
+}
+
+char* file_extension(char *file_path) {
+    char *file_name = strrchr(file_path, '/');
+    if (!file_name) return "";
+
+    char *dot = strrchr(file_name + 1, '.');
+    if (!dot) return "";
+
+    return strlower(dot + 1);
 }

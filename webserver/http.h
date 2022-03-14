@@ -5,8 +5,6 @@
 #define BUFFER_SIZE 1024
 #define HTTP_LINE_LENGTH 8192
 
-#define DEFAULT_MIME_TYPE "application/octet-stream"
-
 /**
  * @brief Permet de passer le header d'un client.
  * @param io_client Le client en question
