@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -44,6 +45,7 @@ int creer_serveur(int port) {
 }
 
 int creer_client(int server_socket) {
+//    struct sockaddr* client_addr = malloc(sizeof(struct sockaddr)); 
     int client_socket = accept(server_socket, NULL, NULL);
     // Recup le 2e param pour savoir d'où ça vient !
     s_log(level2, "Connexion from", "somewhere");

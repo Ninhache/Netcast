@@ -78,7 +78,7 @@ char* fgets_or_exit(char* buffer, int size, FILE* stream) {
 }
 
 char* strlower(char *str) {
-    for (char *str = str; *str != '\0'; str++) {
+    for (; *str != '\0'; str++) {
         *str = tolower(*str);
     }
     return str;
